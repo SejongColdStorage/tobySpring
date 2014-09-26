@@ -16,11 +16,20 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile 'org.springframework:spring-core:4.1.0.RELEASE'
-    compile 'org.springframework:spring-context:4.1.0.RELEASE'
-    compile 'org.springframework:spring-jdbc:4.1.0.RELEASE'
-    compile 'org.hsqldb:hsqldb:2.3.2'
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.springframework:spring-test:4.1.0.RELEASE'
+ext {
+    springVersion = "4.1.0.RELEASE"
+    hsqldbVersion = "2.3.2"
+    junitVersion = "4.11"
 }
+
+dependencies {
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "org.hsqldb:hsqldb:$hsqldbVersion"
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.springframework:spring-test:$springVersion"
+}
+
+/*컴파일시 UTF-8을 기본 문자열로 사용한다.*/
+[ compileJava, compileTestJava ]*.options*.encoding = 'UTF-8'
