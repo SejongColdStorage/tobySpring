@@ -11,16 +11,22 @@ sourceSets {
     }
 }
 
+ext{
+    springVersion = "4.1.0.RELEASE"
+    junitVersion = "4.11"
+    hsqldbVersion = "2.3.2"
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.springframework:spring-core:4.1.0.RELEASE'
-    compile 'org.springframework:spring-context:4.1.0.RELEASE'
-    compile 'org.springframework:spring-jdbc:4.1.0.RELEASE'
-    compile 'org.hsqldb:hsqldb:2.3.2'
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.springframework:spring-test:4.1.0.RELEASE'
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "org.hsqldb:hsqldb:$hsqldbVersion"
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.springframework:spring-test:$springVersion"
 }
