@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 public class UserDao {
     private DataSource dataSource;
+    private PreparedStatement preparedStatement;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -21,7 +22,8 @@ public class UserDao {
         Connection c = this.dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
-                "insert into users(id, name, password) values(?,?,?)");
+                "insert into users(id, name, password) values(?,?,?)"
+        );
         ps.setString(1, user.getId());
         ps.setString(2, user.getName());
         ps.setString(3, user.getPassword());
@@ -57,30 +59,64 @@ public class UserDao {
         return user;
     }
 
-
     public void deleteAll() throws SQLException {
-        Connection c = dataSource.getConnection();
-
-        PreparedStatement ps = c.prepareStatement("delete from users");
-        ps.executeUpdate();
-
-        ps.close();
-        c.close();
+        jdbcContextStatementStrategy(new DeleteAllStatement());
     }
 
-    public int getCount() throws SQLException  {
-        Connection c = dataSource.getConnection();
+    public void jdbcContextStatementStrategy(StatementStrategy stmt) throws SQLException{
+        Connection c = null;
+        PreparedStatement ps = null;
 
-        PreparedStatement ps = c.prepareStatement("select count(*) from users");
+        try {
+            c = dataSource.getConnection();
+            ps = stmt.makePreparedStatement(c);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+            }
 
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
-
-        rs.close();
-        ps.close();
-        c.close();
-
-        return count;
+            try {
+                c.close();
+            } catch (SQLException e) {
+            }
+        }
     }
+
+    public int getCount() throws SQLException {
+        Connection c = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            int count = 0;
+            c = dataSource.getConnection();
+            ps = c.prepareStatement("select count(*) from users");
+
+            rs = ps.executeQuery();
+            rs.next();
+            count = rs.getInt(1);
+            return count;
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+            }
+            try {
+                ps.close();
+            } catch (SQLException e) {
+            }
+            try {
+                c.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+
 }

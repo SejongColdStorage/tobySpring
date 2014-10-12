@@ -1,7 +1,10 @@
 package kr.sadalmelik.dao;
 
-/**
- * Created by SejongPark on 14. 10. 13..
- */
-public class StatementStrategy {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public interface StatementStrategy {
+    PreparedStatement makePreparedStatement(Connection c) throws SQLException;
 }
+

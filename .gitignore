@@ -13,6 +13,7 @@
 
 # java (from https://github.com/github/gitignore/blob/master/Java.gitignore)
 *.class
+target
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
