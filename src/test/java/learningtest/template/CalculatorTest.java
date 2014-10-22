@@ -22,7 +22,6 @@ public class CalculatorTest {
     @Test
     public void sumOfNumber() throws IOException {
 
-        System.out.println(filePath);
         assertThat(calculator.calcSum(filePath), is(10));
     }
 
@@ -31,6 +30,11 @@ public class CalculatorTest {
     public void multiplyOfNumber() throws IOException {
 
         assertThat(calculator.calcMultiply(filePath), is(24));
+    }
+
+    @Test
+    public void concatnate() throws IOException {
+        assertThat(calculator.concatnate(filePath), is("1234"));
     }
 
 }

@@ -7,26 +7,47 @@ import java.io.IOException;
 public class Calculator {
 
     public int calcSum(String filePath) throws IOException {
-        LineCallback sumCallback = (line, value) -> value + Integer.valueOf(line);
+        LineCallback sumCallback = new LineCallback<Integer>() {
+            @Override
+            public Integer doSomethingWithLine(String line, Integer value) {
+                return value + Integer.valueOf(line);
+            }
+        };
         return lineReadTemplate(filePath, sumCallback, 0);
     }
 
     public int calcMultiply(String filePath) throws IOException {
-        LineCallback sumCallback = (line, value) -> value * Integer.valueOf(line);
+        LineCallback sumCallback = new LineCallback<Integer>() {
+            @Override
+            public Integer doSomethingWithLine(String line, Integer value) {
+                return value * Integer.valueOf(line);
+            }
+        };
         return lineReadTemplate(filePath, sumCallback, 1);
     }
 
 
-    private int lineReadTemplate(String filePath, LineCallback callback, int initVal) throws IOException{
+    public String concatnate(String filePath) throws IOException {
+        LineCallback sumCallback = new LineCallback<String>() {
+            @Override
+            public String doSomethingWithLine(String line, String value) {
+                return value + line;
+            }
+        };
+        return lineReadTemplate(filePath, sumCallback, "");
+    }
+
+    private <T> T lineReadTemplate(String filePath, LineCallback<T> callback, T initVal) throws IOException {
         BufferedReader br = null;
 
         try {
             br = new BufferedReader(new FileReader(filePath));
-            Integer res = initVal;
+            T res = initVal;
             String line = null;
-            int ret = callback.doSomethingWithLine(line, res);
-
-            return ret;
+            while ((line = br.readLine()) != null) {
+                res = callback.doSomethingWithLine(line, res);
+            }
+            return res;
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
@@ -40,4 +61,6 @@ public class Calculator {
             }
         }
     }
+
+
 }
