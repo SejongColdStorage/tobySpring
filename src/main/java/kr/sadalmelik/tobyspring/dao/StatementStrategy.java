@@ -1,4 +1,4 @@
-package kr.sadalmelik.dao;
+package kr.sadalmelik.tobyspring.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
