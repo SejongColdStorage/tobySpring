@@ -6,9 +6,6 @@ import kr.sadalmelik.tobyspring.domain.User;
 
 import java.util.List;
 
-/**
- * Created by SejongPark on 14. 10. 24..
- */
 public class UserService {
     UserDao userDao;
 
@@ -40,4 +37,8 @@ public class UserService {
         }
     }
 
+public void add(User user) {
+    if(user.getLevel() == null) user.setLevel(Level.BASIC);
+    userDao.add(user);
+}
 }
